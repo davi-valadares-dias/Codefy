@@ -361,3 +361,16 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Codefy: local configuration and generated web/CMake artifacts
+.env
+.env.*
+!.env.example
+!.env.*.example
+**/appsettings.Local.json
+**/appsettings.*.local.json
+build/
+dist/
+.react-router/
+coverage/
+CMakeUserPresets.json

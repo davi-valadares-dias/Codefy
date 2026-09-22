@@ -1,0 +1,3493 @@
+Codefy.
+
+Personal Developer Portfolio
+
+Documento de Requisitos e Especificações Técnicas
+
+Planejamento completo para desenvolvimento de uma aplicação full-stack de portfólio profissional com gerenciamento de conteúdo e análise automatizada de repositórios.
+
+Versão 2.0
+Arquitetura definida
+Projeto pessoal
+
+20 de setembro de 2026
+
+PARTE I — DEFINIÇÃO DO PRODUTO
+1. Visão geral do Codefy
+1.1. Descrição
+
+O Codefy será uma aplicação web de portfólio profissional desenvolvida para centralizar e apresentar a trajetória de um desenvolvedor de software.
+
+O sistema será composto por três ambientes principais:
+
+Um site público para apresentar suas informações profissionais, projetos e competências.
+
+Um painel administrativo privado para gerenciar todo o conteúdo.
+
+Um módulo de análise de código, desenvolvido em C++, para extrair estatísticas técnicas de repositórios selecionados do GitHub.
+
+O conteúdo exibido no portfólio será armazenado em banco de dados e disponibilizado por meio de uma API REST.
+
+O administrador poderá modificar projetos, experiências, informações pessoais e outros conteúdos sem necessidade de alterar o código-fonte ou realizar um novo deploy a cada atualização.
+
+1.2. Natureza do produto
+
+O Codefy será um sistema de uso individual, e não um SaaS comercial multiusuário.
+
+Não haverá:
+
+Cadastro público de usuários.
+
+Criação de portfólios para terceiros.
+
+Assinaturas ou planos pagos.
+
+Organizações ou equipes.
+
+Múltiplos administradores.
+
+Sistema de cobrança.
+
+Painel para recrutadores.
+
+A aplicação terá somente uma conta administrativa, responsável pelo gerenciamento do seu próprio portfólio.
+
+1.3. Objetivo principal
+
+Desenvolver um portfólio profissional dinâmico que apresente seus projetos e, simultaneamente, demonstre suas habilidades técnicas em desenvolvimento frontend, backend, banco de dados, C++, integração de sistemas, segurança e deploy.
+
+1.4. Objetivos específicos
+
+Apresentar sua trajetória profissional.
+
+Organizar e divulgar projetos.
+
+Demonstrar habilidades técnicas.
+
+Disponibilizar informações de contato.
+
+Integrar informações de repositórios GitHub.
+
+Permitir administração dinâmica dos conteúdos.
+
+Apresentar estatísticas dos projetos.
+
+Disponibilizar currículo profissional.
+
+Demonstrar capacidade de desenvolver e manter uma aplicação completa.
+
+PARTE II — ARQUITETURA DEFINITIVA
+2. Tecnologias oficiais
+
+A arquitetura ficará dividida da seguinte maneira:
+
+Camada
+
+	
+
+Tecnologia
+
+	
+
+Responsabilidade
+
+
+
+
+Frontend
+
+	
+
+React
+
+	
+
+Interface da aplicação
+
+
+
+
+Linguagem frontend
+
+	
+
+TypeScript
+
+	
+
+Tipagem e lógica
+
+
+
+
+Backend
+
+	
+
+ASP.NET Core
+
+	
+
+API REST
+
+
+
+
+Linguagem backend
+
+	
+
+C#
+
+	
+
+Regras de negócio
+
+
+
+
+Banco
+
+	
+
+PostgreSQL
+
+	
+
+Persistência
+
+
+
+
+ORM
+
+	
+
+Entity Framework Core
+
+	
+
+Mapeamento e migrations
+
+
+
+
+Analisador
+
+	
+
+C++
+
+	
+
+Processamento de código
+
+
+
+
+Build C++
+
+	
+
+CMake
+
+	
+
+Compilação
+
+
+
+
+API externa
+
+	
+
+GitHub API
+
+	
+
+Informações dos repositórios
+
+
+
+
+Versionamento
+
+	
+
+Git + GitHub
+
+	
+
+Controle de versões
+
+
+
+
+IDE
+
+	
+
+Visual Studio
+
+	
+
+Desenvolvimento principal
+
+Bibliotecas específicas de interface, formulários e validação poderão ser escolhidas durante a configuração do projeto.
+
+Não é necessário instalar muitas bibliotecas antes de identificar uma necessidade concreta.
+
+2.1. Arquitetura geral
+CODEFY WEB
+
+React + TypeScript
+
+Portfólio público
+Admin privado
+
+HTTPS / JSON
+
+CODEFY API
+
+C# + ASP.NET Core
+
+Autenticação • Regras de negócio • Integrações
+
+PostgreSQL
+
+Persistência
+
+C++
+
+Análise
+
+GitHub
+
+Repositórios
+
+Arquitetura lógica. O C++ será um executável independente invocado pela API.
+Decisão arquitetural
+
+O backend será um monólito modular em ASP.NET Core.
+
+Isso significa que teremos uma única API, organizada em módulos e camadas, em vez de diversos microsserviços.
+
+O módulo C++ será separado porque possui uma responsabilidade específica: processar arquivos de código.
+
+O C++ não substituirá o backend C#.
+
+Ele executará tarefas especializadas quando solicitado pelo backend.
+
+3. Organização da solução
+
+O repositório será organizado como um monorepositório: um único repositório Git contendo todos os componentes.
+
+Codefy/
+│
+├── frontend/
+│   │
+│   ├── public/
+│   │
+│   ├── src/
+│   │   ├── assets/
+│   │   ├── components/
+│   │   ├── layouts/
+│   │   ├── pages/
+│   │   ├── routes/
+│   │   ├── services/
+│   │   ├── hooks/
+│   │   ├── contexts/
+│   │   ├── types/
+│   │   ├── utils/
+│   │   └── styles/
+│   │
+│   ├── package.json
+│   └── tsconfig.json
+│
+├── backend/
+│   │
+│   ├── Codefy.sln
+│   │
+│   ├── Codefy.Api/
+│   │
+│   ├── Codefy.Application/
+│   │
+│   ├── Codefy.Domain/
+│   │
+│   └── Codefy.Infrastructure/
+│
+├── analyzer/
+│   │
+│   ├── src/
+│   ├── include/
+│   ├── tests/
+│   ├── CMakeLists.txt
+│   └── README.md
+│
+├── tests/
+│
+├── docs/
+│   ├── requirements/
+│   ├── architecture/
+│   ├── database/
+│   └── api/
+│
+├── .github/
+│   └── workflows/
+│
+├── .gitignore
+├── README.md
+└── LICENSE
+
+Essa estrutura representa o objetivo final. Você não precisa criar todas as pastas vazias no primeiro dia.
+
+Importante sobre o Visual Studio: se ele já criou um projeto Codefy no seu computador, primeiro identificaremos o tipo de projeto, o arquivo .sln e a localização da pasta raiz. Não será necessário apagar tudo ou mover arquivos compilados da pasta x64 sem verificar o que existe.
+
+PARTE III — REQUISITOS FUNCIONAIS DO SITE PÚBLICO
+
+Cada requisito terá um identificador para facilitar sua implementação e organização no GitHub Projects.
+
+4. Página inicial — Home
+Prioridade: essencial
+
+A Home deverá apresentar um resumo da sua identidade profissional.
+
+Codefy.
+Disponível para oportunidades
+Olá, eu sou Davi.
+
+Desenvolvedor de Software
+
+Transformando ideias em aplicações reais, do frontend ao backend.
+
+Explorar projetos →
+
+Currículo ↓
+
+08
+
+Projetos
+
+12
+
+Tecnologias
+
+03
+
+Experiências
+
+Wireframe ilustrativo. Os dados reais virão da API.
+Requisitos
+
+ID
+
+	
+
+Descrição
+
+
+
+
+RF-001
+
+	
+
+Exibir nome e título profissional
+
+
+
+
+RF-002
+
+	
+
+Exibir fotografia
+
+
+
+
+RF-003
+
+	
+
+Exibir descrição resumida
+
+
+
+
+RF-004
+
+	
+
+Exibir disponibilidade profissional
+
+
+
+
+RF-005
+
+	
+
+Apresentar projetos destacados
+
+
+
+
+RF-006
+
+	
+
+Apresentar tecnologias principais
+
+
+
+
+RF-007
+
+	
+
+Disponibilizar currículo
+
+
+
+
+RF-008
+
+	
+
+Exibir GitHub e LinkedIn
+
+
+
+
+RF-009
+
+	
+
+Disponibilizar botão de contato
+
+
+
+
+RF-010
+
+	
+
+Exibir quantidade de projetos publicados
+
+Regras de negócio
+
+O conteúdo será obtido pelo backend.
+
+A quantidade de projetos será calculada considerando apenas projetos publicados.
+
+A seção de destaque mostrará somente os projetos que estiverem publicados e marcados como destacados.
+
+A disponibilidade profissional será configurada manualmente no painel administrativo.
+
+5. Sobre mim
+Prioridade: essencial
+Finalidade
+
+Apresentar sua trajetória, seus objetivos profissionais e informações relevantes sobre sua formação e atuação.
+
+Requisitos
+
+ID
+
+	
+
+Descrição
+
+
+
+
+RF-011
+
+	
+
+Apresentar biografia completa
+
+
+
+
+RF-012
+
+	
+
+Exibir fotografia
+
+
+
+
+RF-013
+
+	
+
+Exibir resumo profissional
+
+
+
+
+RF-014
+
+	
+
+Apresentar áreas de interesse
+
+
+
+
+RF-015
+
+	
+
+Exibir trajetória profissional
+
+
+
+
+RF-016
+
+	
+
+Apresentar formação acadêmica
+
+
+
+
+RF-017
+
+	
+
+Exibir objetivos profissionais
+
+
+
+
+RF-018
+
+	
+
+Disponibilizar links de contato
+
+Linha do tempo
+
+O sistema poderá apresentar os acontecimentos da sua carreira cronologicamente.
+
+Exemplos de eventos cadastráveis:
+
+Início dos estudos.
+
+Entrada na faculdade.
+
+Desenvolvimento de um projeto.
+
+Início de uma experiência profissional.
+
+Conquista de uma certificação.
+
+A linha do tempo será alimentada por registros independentes no banco de dados.
+
+6. Projetos
+Prioridade: crítica
+
+O módulo de projetos será o núcleo do Codefy.
+
+Ele será responsável por armazenar, organizar e apresentar seus trabalhos técnicos.
+
+6.1. Listagem pública
+Projetos
+
+Buscar projeto...
+
+Todos
+Frontend
+Backend
+Full-stack
+
+Codefy
+
+Portfólio full-stack
+
+React
+C#
+
+GymManager
+
+Gestão de treinos
+
+React
+SQL
+Referência visual, com projetos e imagens demonstrativos.
+Requisitos da listagem
+
+ID
+
+	
+
+Descrição
+
+
+
+
+RF-019
+
+	
+
+Listar projetos publicados
+
+
+
+
+RF-020
+
+	
+
+Exibir imagem de capa
+
+
+
+
+RF-021
+
+	
+
+Exibir título e descrição curta
+
+
+
+
+RF-022
+
+	
+
+Exibir tecnologias
+
+
+
+
+RF-023
+
+	
+
+Filtrar por categoria
+
+
+
+
+RF-024
+
+	
+
+Filtrar por tecnologia
+
+
+
+
+RF-025
+
+	
+
+Pesquisar pelo título
+
+
+
+
+RF-026
+
+	
+
+Ordenar por data
+
+
+
+
+RF-027
+
+	
+
+Paginar resultados
+
+
+
+
+RF-028
+
+	
+
+Abrir detalhes do projeto
+
+Categorias
+
+O sistema deverá permitir cadastrar categorias como:
+
+Frontend, Backend, Full-stack, Mobile, Desktop, Automação e Outros.
+
+As categorias serão configuráveis pelo administrador.
+
+6.2. Página individual de projeto
+
+Cada projeto terá uma URL própria.
+
+Exemplo:
+
+codefy.com/projetos/gym-manager
+
+Informações apresentadas:
+
+Informação
+
+	
+
+Descrição
+
+
+
+
+Título
+
+	
+
+Nome do projeto
+
+
+
+
+Capa
+
+	
+
+Imagem principal
+
+
+
+
+Descrição
+
+	
+
+Explicação geral
+
+
+
+
+Objetivo
+
+	
+
+Finalidade
+
+
+
+
+Problema
+
+	
+
+Necessidade identificada
+
+
+
+
+Solução
+
+	
+
+Solução implementada
+
+
+
+
+Funcionalidades
+
+	
+
+Recursos do software
+
+
+
+
+Tecnologias
+
+	
+
+Stack utilizada
+
+
+
+
+Arquitetura
+
+	
+
+Estrutura técnica
+
+
+
+
+Desafios
+
+	
+
+Problemas enfrentados
+
+
+
+
+Aprendizados
+
+	
+
+Conhecimentos adquiridos
+
+
+
+
+GitHub
+
+	
+
+Código-fonte
+
+
+
+
+Deploy
+
+	
+
+Demonstração online
+
+
+
+
+Status
+
+	
+
+Situação do projeto
+
+
+
+
+Período
+
+	
+
+Datas de desenvolvimento
+
+
+
+
+Galeria
+
+	
+
+Screenshots
+
+
+
+
+Estatísticas
+
+	
+
+Análise C++, quando disponível
+
+Requisitos
+
+ID
+
+	
+
+Descrição
+
+
+
+
+RF-029
+
+	
+
+Exibir informações completas
+
+
+
+
+RF-030
+
+	
+
+Exibir galeria de imagens
+
+
+
+
+RF-031
+
+	
+
+Exibir funcionalidades
+
+
+
+
+RF-032
+
+	
+
+Exibir tecnologias relacionadas
+
+
+
+
+RF-033
+
+	
+
+Disponibilizar link do GitHub
+
+
+
+
+RF-034
+
+	
+
+Disponibilizar link de demonstração
+
+
+
+
+RF-035
+
+	
+
+Exibir status
+
+
+
+
+RF-036
+
+	
+
+Exibir projetos relacionados
+
+
+
+
+RF-037
+
+	
+
+Exibir análise técnica, quando disponível
+
+Projetos relacionados
+
+O sistema identificará projetos que compartilham tecnologias.
+
+Por exemplo, um projeto em React poderá recomendar outros projetos que também utilizem React.
+
+Uma implementação simples pode priorizar a quantidade de tecnologias em comum e utilizar a data de publicação como critério secundário.
+
+Não será necessário desenvolver um mecanismo de inteligência artificial.
+
+7. Tecnologias e habilidades
+Prioridade: essencial
+
+O objetivo é mostrar as tecnologias com as quais você possui experiência.
+
+Requisitos
+
+ID
+
+	
+
+Descrição
+
+
+
+
+RF-038
+
+	
+
+Exibir tecnologias cadastradas
+
+
+
+
+RF-039
+
+	
+
+Agrupar por categoria
+
+
+
+
+RF-040
+
+	
+
+Exibir ícones
+
+
+
+
+RF-041
+
+	
+
+Relacionar tecnologia a projetos
+
+
+
+
+RF-042
+
+	
+
+Permitir ordenação
+
+
+
+
+RF-043
+
+	
+
+Ocultar tecnologias não publicadas
+
+Categorias
+
+Frontend, Backend, Banco de Dados, DevOps, Ferramentas e Outros.
+
+Cada tecnologia terá um único cadastro, podendo estar associada a vários projetos.
+
+O sistema não deverá calcular automaticamente o seu nível de conhecimento com base apenas na quantidade de linhas de código ou repositórios.
+
+8. Experiências profissionais
+Prioridade: média
+Requisitos
+
+ID
+
+	
+
+Descrição
+
+
+
+
+RF-044
+
+	
+
+Exibir histórico profissional
+
+
+
+
+RF-045
+
+	
+
+Exibir empresa e cargo
+
+
+
+
+RF-046
+
+	
+
+Exibir período
+
+
+
+
+RF-047
+
+	
+
+Exibir responsabilidades
+
+
+
+
+RF-048
+
+	
+
+Exibir descrição das atividades
+
+
+
+
+RF-049
+
+	
+
+Exibir tecnologias relacionadas
+
+
+
+
+RF-050
+
+	
+
+Identificar experiência atual
+
+As experiências serão ordenadas por data de início, da mais recente para a mais antiga.
+
+Se a experiência estiver marcada como atual, a data de término poderá ficar vazia.
+
+9. Formação acadêmica
+Prioridade: média
+Requisitos
+
+ID
+
+	
+
+Descrição
+
+
+
+
+RF-051
+
+	
+
+Exibir instituições
+
+
+
+
+RF-052
+
+	
+
+Exibir cursos
+
+
+
+
+RF-053
+
+	
+
+Exibir período
+
+
+
+
+RF-054
+
+	
+
+Exibir situação acadêmica
+
+
+
+
+RF-055
+
+	
+
+Exibir informações complementares
+
+Os status poderão ser: em andamento, concluído ou interrompido.
+
+10. Certificações
+Prioridade: evolução
+Requisitos
+
+ID
+
+	
+
+Descrição
+
+
+
+
+RF-056
+
+	
+
+Listar certificações
+
+
+
+
+RF-057
+
+	
+
+Exibir instituição emissora
+
+
+
+
+RF-058
+
+	
+
+Exibir data
+
+
+
+
+RF-059
+
+	
+
+Disponibilizar credencial
+
+
+
+
+RF-060
+
+	
+
+Exibir certificado quando autorizado
+
+Os arquivos e identificadores cadastrados deverão ser apropriados para divulgação pública.
+
+11. Currículo
+Prioridade: evolução
+
+O Codefy deverá permitir gerar um currículo profissional em PDF utilizando as informações armazenadas no banco.
+
+Funcionalidades
+
+Gerar PDF.
+
+Selecionar projetos relevantes.
+
+Selecionar experiências.
+
+Incluir tecnologias.
+
+Incluir formação.
+
+Incluir contato.
+
+Ocultar seções.
+
+Atualizar currículo quando os dados mudarem.
+
+O currículo poderá ter um layout único na primeira implementação.
+
+Na versão inicial do Codefy, podemos disponibilizar um currículo PDF gerado previamente. A geração dinâmica entrará posteriormente, sem bloquear a publicação do portfólio.
+
+12. Contato
+Prioridade: essencial
+
+A página de contato permitirá que visitantes enviem mensagens.
+
+Campos
+
+Nome.
+
+E-mail.
+
+Assunto.
+
+Mensagem.
+
+Requisitos
+
+ID
+
+	
+
+Descrição
+
+
+
+
+RF-061
+
+	
+
+Exibir formulário
+
+
+
+
+RF-062
+
+	
+
+Validar campos
+
+
+
+
+RF-063
+
+	
+
+Enviar mensagem à API
+
+
+
+
+RF-064
+
+	
+
+Armazenar mensagem
+
+
+
+
+RF-065
+
+	
+
+Exibir confirmação
+
+
+
+
+RF-066
+
+	
+
+Aplicar proteção antispam
+
+
+
+
+RF-067
+
+	
+
+Exibir alternativas de contato
+
+O formulário deverá validar os dados no frontend e no backend.
+
+A API aplicará limites de requisição e tamanho da mensagem.
+
+O sistema deverá informar a finalidade da coleta e evitar reter mensagens por mais tempo do que o necessário.
+
+O envio de notificações por e-mail poderá ser implementado em uma evolução, mantendo o armazenamento das mensagens no painel como comportamento inicial.
+
+PARTE IV — PAINEL ADMINISTRATIVO
+13. Definição do ambiente administrativo
+
+O Codefy terá uma interface privada acessada por uma rota como:
+
+codefy.com/admin
+
+Somente a conta administrativa poderá acessar esse ambiente.
+
+O sistema não terá cadastro público.
+
+13.1. Login
+Codefy Admin
+
+Acesse o painel administrativo
+
+E-mail
+Senha
+Entrar
+Wireframe ilustrativo do login.
+Requisitos
+
+ID
+
+	
+
+Descrição
+
+
+
+
+RF-068
+
+	
+
+Autenticar administrador
+
+
+
+
+RF-069
+
+	
+
+Encerrar sessão
+
+
+
+
+RF-070
+
+	
+
+Proteger rotas administrativas
+
+
+
+
+RF-071
+
+	
+
+Permitir alteração de senha
+
+
+
+
+RF-072
+
+	
+
+Controlar tentativas de login
+
+
+
+
+RF-073
+
+	
+
+Permitir recuperação segura de acesso
+
+A recuperação de acesso poderá ser implementada após o MVP. Até lá, deverá existir um procedimento seguro e documentado de recuperação administrativa, sem expor credenciais.
+
+A senha deverá ser armazenada utilizando um mecanismo apropriado de hash de senhas, nunca em texto puro.
+
+14. Dashboard administrativo
+
+O dashboard será a primeira página após o login.
+
+Dashboard
+
+Visão geral do seu portfólio
+
+12
+
+Projetos
+
+08
+
+Publicados
+
+04
+
+Rascunhos
+
+06
+
+Mensagens
+
+Acesso rápido
+Novo projeto
+Editar perfil
+Mensagens
+Exemplo de interface e valores ilustrativos.
+Requisitos
+
+ID
+
+	
+
+Descrição
+
+
+
+
+RF-074
+
+	
+
+Exibir total de projetos
+
+
+
+
+RF-075
+
+	
+
+Exibir projetos publicados
+
+
+
+
+RF-076
+
+	
+
+Exibir projetos em rascunho
+
+
+
+
+RF-077
+
+	
+
+Exibir mensagens
+
+
+
+
+RF-078
+
+	
+
+Exibir últimas alterações
+
+
+
+
+RF-079
+
+	
+
+Disponibilizar ações rápidas
+
+
+
+
+RF-080
+
+	
+
+Exibir estatísticas de visitantes quando habilitadas
+
+As métricas de visitantes só serão mostradas após a implementação da coleta de dados. Antes disso, o sistema não deverá apresentar números fictícios como se fossem reais.
+
+15. Gerenciamento de projetos
+Prioridade: crítica
+
+O painel permitirá realizar todas as operações necessárias para administrar projetos.
+
+Funcionalidades
+
+Criar.
+
+Editar.
+
+Salvar rascunho.
+
+Publicar.
+
+Despublicar.
+
+Arquivar.
+
+Excluir.
+
+Destacar.
+
+Reordenar.
+
+Adicionar imagens.
+
+Vincular tecnologias.
+
+Vincular repositório GitHub.
+
+Solicitar análise C++.
+
+Requisitos
+
+ID
+
+	
+
+Descrição
+
+
+
+
+RF-081
+
+	
+
+Cadastrar projeto
+
+
+
+
+RF-082
+
+	
+
+Editar projeto
+
+
+
+
+RF-083
+
+	
+
+Salvar rascunho
+
+
+
+
+RF-084
+
+	
+
+Publicar
+
+
+
+
+RF-085
+
+	
+
+Despublicar
+
+
+
+
+RF-086
+
+	
+
+Arquivar
+
+
+
+
+RF-087
+
+	
+
+Excluir
+
+
+
+
+RF-088
+
+	
+
+Alterar ordem
+
+
+
+
+RF-089
+
+	
+
+Definir destaque
+
+
+
+
+RF-090
+
+	
+
+Gerenciar galeria
+
+
+
+
+RF-091
+
+	
+
+Vincular tecnologias
+
+
+
+
+RF-092
+
+	
+
+Vincular GitHub
+
+Estados do projeto
+Rascunho
+
+Visível apenas no painel
+
+Publicado
+
+Visível no site público
+
+Arquivado
+
+Preservado no sistema; visibilidade controlada
+
+Regras de negócio
+
+RN-001: O título do projeto é obrigatório.
+
+RN-002: O slug deve ser único.
+
+RN-003: Para publicação, o projeto deverá ter título, slug, descrição curta, descrição completa, categoria e pelo menos uma tecnologia.
+
+RN-004: Um projeto em rascunho não poderá ser acessado publicamente.
+
+RN-005: Somente projetos publicados poderão aparecer em destaque.
+
+RN-006: A exclusão exigirá confirmação.
+
+RN-007: Imagens deverão ser removidas ou desvinculadas com segurança.
+
+RN-008: Links opcionais vazios não deverão produzir botões sem destino.
+
+RN-009: Alterações no slug de um projeto publicado deverão preservar um redirecionamento ou exigir confirmação sobre a mudança de URL.
+
+RN-010: Somente conteúdo publicado poderá aparecer em respostas da API pública.
+
+16. Gerenciamento de perfil
+
+O painel permitirá editar:
+
+Nome.
+
+Fotografia.
+
+Título profissional.
+
+Resumo.
+
+Biografia.
+
+Localização pública.
+
+Disponibilidade.
+
+E-mail público.
+
+GitHub.
+
+LinkedIn.
+
+Outras redes sociais.
+
+As alterações serão refletidas na interface pública.
+
+17. Gerenciamento das demais informações
+
+Área
+
+	
+
+Funcionalidades
+
+
+
+
+Tecnologias
+
+	
+
+CRUD, categorias e ícones
+
+
+
+
+Experiências
+
+	
+
+CRUD e ordenação
+
+
+
+
+Formação
+
+	
+
+CRUD e status
+
+
+
+
+Certificações
+
+	
+
+CRUD e arquivos
+
+
+
+
+Linha do tempo
+
+	
+
+Cadastro e ordenação
+
+
+
+
+Mensagens
+
+	
+
+Consultar, marcar e excluir
+
+
+
+
+Mídia
+
+	
+
+Upload, seleção e exclusão
+
+
+
+
+Currículo
+
+	
+
+Configuração e geração
+
+
+
+
+Estatísticas
+
+	
+
+Visualização de métricas
+
+
+
+
+Configurações
+
+	
+
+Dados gerais do site
+
+CRUD significa criar, consultar, atualizar e excluir registros.
+
+O gerenciamento de projetos, tecnologias e perfil será desenvolvido antes dos demais módulos administrativos.
+
+PARTE V — MÓDULO ESPECIALIZADO EM C++
+18. GitHub Code Analyzer
+Codefy Analyzer
+
+Módulo desenvolvido em C++ para análise estática de repositórios.
+
+Funcionalidade diferencial
+
+Processamento de arquivos, identificação de linguagens, contagem de linhas e geração de estatísticas técnicas.
+
+Esse será o módulo responsável por demonstrar a utilização de C++ no seu portfólio.
+
+Ele funcionará independentemente da interface e da API principal.
+
+18.1. Objetivo
+
+Analisar arquivos de código de repositórios selecionados, extraindo métricas que poderão ser apresentadas na página individual de cada projeto.
+
+O analisador não deverá compilar nem executar código obtido do GitHub.
+
+Sua função será apenas examinar os arquivos.
+
+18.2. Funcionalidades
+
+ID
+
+	
+
+Descrição
+
+
+
+
+RF-093
+
+	
+
+Receber diretório de análise
+
+
+
+
+RF-094
+
+	
+
+Percorrer arquivos permitidos
+
+
+
+
+RF-095
+
+	
+
+Identificar extensões
+
+
+
+
+RF-096
+
+	
+
+Identificar linguagens
+
+
+
+
+RF-097
+
+	
+
+Contabilizar arquivos
+
+
+
+
+RF-098
+
+	
+
+Contabilizar linhas
+
+
+
+
+RF-099
+
+	
+
+Contabilizar linhas por linguagem
+
+
+
+
+RF-100
+
+	
+
+Calcular distribuição percentual
+
+
+
+
+RF-101
+
+	
+
+Ignorar dependências
+
+
+
+
+RF-102
+
+	
+
+Ignorar arquivos gerados
+
+
+
+
+RF-103
+
+	
+
+Gerar resultado JSON
+
+
+
+
+RF-104
+
+	
+
+Informar erros
+
+
+
+
+RF-105
+
+	
+
+Respeitar limites de processamento
+
+Linguagens inicialmente reconhecidas
+
+C++: .cpp, .cc, .cxx, .hpp e .h, conforme regras de classificação.
+
+C#: .cs.
+
+TypeScript: .ts e .tsx.
+
+JavaScript: .js e .jsx.
+
+Python: .py.
+
+HTML: .html.
+
+CSS: .css.
+
+SQL: .sql.
+
+Arquivos ambíguos, como .h, não deverão ser classificados como C++ com certeza absoluta apenas pela extensão.
+
+O analisador poderá classificar esses arquivos como C/C++ ou aplicar regras adicionais.
+
+19. Fluxo completo de análise
+01
+
+Selecionar repositório
+
+Você escolhe um repositório público no painel.
+
+02
+
+Requisição para API
+
+O frontend solicita uma nova análise.
+
+03
+
+Obter snapshot
+
+O backend consulta o GitHub e obtém uma versão dos arquivos.
+
+04
+
+Preparar ambiente
+
+Arquivos são validados e disponibilizados em diretório temporário isolado.
+
+05
+
+Executar C++
+
+O backend inicia o analisador com limites definidos.
+
+06
+
+Receber JSON
+
+O analisador devolve métricas e informações do processamento.
+
+07
+
+Persistir resultado
+
+O backend valida e armazena o resultado no PostgreSQL.
+
+08
+
+Apresentar dados
+
+O frontend exibe as estatísticas no projeto.
+
+Decisão técnica: snapshots
+
+O Codefy deverá analisar uma versão identificável do repositório.
+
+A API deverá armazenar o commit correspondente à análise, permitindo indicar quais arquivos foram utilizados.
+
+Isso evita que o resultado seja apresentado como atual quando o repositório já recebeu novas alterações.
+
+20. Comunicação C# → C++
+
+A primeira versão utilizará execução de processo.
+
+O backend C# iniciará o executável C++ e informará o diretório que deve ser analisado.
+
+O processo retornará um documento JSON.
+
+Contrato de saída ilustrativo:
+
+{
+  "status": "completed",
+  "filesAnalyzed": 124,
+  "totalLines": 8420,
+  "languages": [
+    {
+      "name": "TypeScript",
+      "files": 70,
+      "lines": 4800,
+      "percentage": 57.01
+    },
+    {
+      "name": "C#",
+      "files": 54,
+      "lines": 3620,
+      "percentage": 42.99
+    }
+  ]
+}
+
+Esses valores são fictícios.
+
+O percentual deverá ser calculado utilizando a quantidade de linhas das linguagens reconhecidas como denominador.
+
+Caso nenhuma linguagem seja reconhecida, o resultado deverá retornar uma distribuição vazia, evitando divisão por zero.
+
+Regras da comunicação
+
+A API deverá validar os parâmetros.
+
+O processo terá tempo máximo de execução.
+
+O processo terá limite de recursos.
+
+O JSON retornado deverá ser validado.
+
+Mensagens técnicas poderão ser registradas separadamente.
+
+O processo não deverá receber credenciais do GitHub.
+
+Diretórios temporários deverão ser removidos após a análise.
+
+Erros não poderão derrubar a API principal.
+
+21. Segurança do analisador
+
+Esse ponto é especialmente importante porque o sistema processará arquivos obtidos externamente.
+
+RN-011: Somente repositórios públicos do GitHub explicitamente selecionados poderão ser analisados na primeira versão.
+
+RN-012: A API deverá validar proprietário e nome do repositório e construir as requisições para os endpoints oficiais, sem aceitar URLs arbitrárias para download.
+
+RN-013: O download terá limites de tamanho.
+
+RN-014: A extração de arquivos deverá bloquear caminhos que escapem do diretório permitido.
+
+RN-015: Links simbólicos deverão ser ignorados ou tratados sem seguir caminhos externos.
+
+RN-016: O analisador não poderá executar scripts ou comandos contidos no repositório.
+
+RN-017: O número de arquivos, o tamanho individual e o volume total processado terão limites.
+
+RN-018: O processo C++ deverá rodar com permissões restritas, preferencialmente em ambiente isolado e sem acesso à rede.
+
+RN-019: Em caso de falha, a análise será marcada como erro, preservando a disponibilidade do portfólio.
+
+RN-020: O backend deverá encerrar processos que ultrapassarem os limites configurados.
+
+O download e a extração serão responsabilidades do backend e da infraestrutura. O C++ receberá apenas o diretório já preparado e validado.
+
+22. Estatísticas exibidas
+Análise de código
+Exemplo
+
+Projeto: Codefy
+
+Arquivos
+
+124
+
+Linhas
+
+8.420
+Distribuição de linguagens
+C#
+C++
+CSS
+TypeScript
+Estatísticas ilustrativas; dados reais serão fornecidos pelo analisador.
+
+Também será possível exibir a data da análise, o commit analisado e a quantidade de arquivos ignorados.
+
+A contagem de linhas não deverá ser apresentada como uma medida de qualidade ou produtividade. Ela representa somente uma característica quantitativa do código.
+
+PARTE VI — BANCO DE DADOS
+23. Modelagem com PostgreSQL
+
+O banco será responsável por armazenar todas as informações persistentes da aplicação.
+
+O acesso será implementado por meio do Entity Framework Core.
+
+23.1. Tabelas principais
+
+Tabela
+
+	
+
+Responsabilidade
+
+
+
+
+admin_users
+
+	
+
+Conta administrativa
+
+
+
+
+profiles
+
+	
+
+Perfil profissional
+
+
+
+
+social_links
+
+	
+
+Redes sociais
+
+
+
+
+projects
+
+	
+
+Projetos
+
+
+
+
+project_categories
+
+	
+
+Categorias
+
+
+
+
+technologies
+
+	
+
+Tecnologias
+
+
+
+
+technology_categories
+
+	
+
+Categorias de tecnologias
+
+
+
+
+project_technologies
+
+	
+
+Relacionamentos
+
+
+
+
+project_images
+
+	
+
+Galeria
+
+
+
+
+project_features
+
+	
+
+Funcionalidades
+
+
+
+
+experiences
+
+	
+
+Experiências
+
+
+
+
+experience_technologies
+
+	
+
+Tecnologias profissionais
+
+
+
+
+education
+
+	
+
+Formação
+
+
+
+
+certifications
+
+	
+
+Certificações
+
+
+
+
+timeline_events
+
+	
+
+Linha do tempo
+
+
+
+
+contact_messages
+
+	
+
+Mensagens
+
+
+
+
+media_files
+
+	
+
+Arquivos
+
+
+
+
+site_settings
+
+	
+
+Configurações
+
+
+
+
+curriculum_settings
+
+	
+
+Currículo
+
+
+
+
+curriculum_projects
+
+	
+
+Projetos selecionados
+
+
+
+
+repository_analyses
+
+	
+
+Análises C++
+
+
+
+
+repository_language_stats
+
+	
+
+Métricas por linguagem
+
+
+
+
+github_sync_logs
+
+	
+
+Histórico da integração
+
+
+
+
+audit_logs
+
+	
+
+Auditoria
+
+
+
+
+analytics_events
+
+	
+
+Estatísticas de visitantes, caso implementadas
+
+As tabelas das funcionalidades avançadas serão criadas nas etapas correspondentes, e não necessariamente no início do projeto.
+
+24. Estrutura da tabela Projects
+projects
+│
+├── id
+├── title
+├── slug
+├── short_description
+├── full_description
+├── problem
+├── solution
+├── architecture
+├── challenges
+├── learnings
+├── category_id
+├── status
+├── featured
+├── cover_image_id
+├── github_url
+├── demo_url
+├── start_date
+├── end_date
+├── display_order
+├── published_at
+├── created_at
+└── updated_at
+Restrições
+
+id: chave primária.
+
+slug: índice único.
+
+category_id: chave estrangeira.
+
+cover_image_id: chave estrangeira opcional.
+
+status: valor controlado.
+
+featured: booleano.
+
+created_at e updated_at: datas obrigatórias.
+
+Datas serão armazenadas em UTC quando representarem instantes.
+
+25. Relacionamentos principais
+Relacionamentos do domínio
+
+Projects
+
+Entidade central
+
+Technologies
+
+ProjectImages
+
+ProjectFeatures
+
+RepositoryAnalyses
+
+Projects ↔ Technologies: N:N
+
+Projects → ProjectImages: 1:N
+
+Projects → ProjectFeatures: 1:N
+
+Projects → RepositoryAnalyses: 1:N
+
+Uma análise poderá possuir várias estatísticas por linguagem.
+
+O sistema deverá manter histórico de análises, mas poderá definir uma política para limitar sua retenção e o espaço utilizado.
+
+26. Tabelas do analisador
+repository_analyses
+
+Campos principais:
+
+id
+project_id
+repository_owner
+repository_name
+commit_sha
+status
+files_analyzed
+files_ignored
+total_lines
+started_at
+completed_at
+error_message
+created_at
+repository_language_stats
+id
+analysis_id
+language_name
+file_count
+line_count
+percentage
+
+O histórico de análises será associado ao projeto por chave estrangeira.
+
+O backend deverá garantir consistência entre o resultado recebido e os valores armazenados.
+
+PARTE VII — BACKEND E API
+27. Estrutura interna do backend
+
+O backend poderá ser dividido em quatro projetos.
+
+Codefy.Api
+
+Responsabilidades:
+
+Controllers ou endpoints.
+
+Configuração HTTP.
+
+Autenticação.
+
+Documentação da API.
+
+Tratamento global de erros.
+
+Configuração de dependências.
+
+Codefy.Application
+
+Responsabilidades:
+
+Casos de uso.
+
+Serviços da aplicação.
+
+Validações de operações.
+
+DTOs.
+
+Orquestração dos processos.
+
+Codefy.Domain
+
+Responsabilidades:
+
+Entidades.
+
+Regras de domínio.
+
+Contratos necessários.
+
+Enumerações.
+
+Comportamentos de negócio.
+
+Codefy.Infrastructure
+
+Responsabilidades:
+
+Entity Framework Core.
+
+Repositórios, quando necessários.
+
+Integração GitHub.
+
+Armazenamento de arquivos.
+
+Integração com C++.
+
+Serviços externos.
+
+Essa separação deverá ser implementada sem criar classes ou abstrações desnecessárias.
+
+28. Endpoints públicos
+
+Prefixo:
+
+/api/v1
+
+Método
+
+	
+
+Endpoint
+
+	
+
+Responsabilidade
+
+
+
+
+GET
+
+	
+
+/profile
+
+	
+
+Perfil
+
+
+
+
+GET
+
+	
+
+/projects
+
+	
+
+Projetos publicados
+
+
+
+
+GET
+
+	
+
+/projects/{slug}
+
+	
+
+Projeto específico
+
+
+
+
+GET
+
+	
+
+/technologies
+
+	
+
+Tecnologias
+
+
+
+
+GET
+
+	
+
+/experiences
+
+	
+
+Experiências
+
+
+
+
+GET
+
+	
+
+/education
+
+	
+
+Formação
+
+
+
+
+GET
+
+	
+
+/certifications
+
+	
+
+Certificações
+
+
+
+
+GET
+
+	
+
+/timeline
+
+	
+
+Linha do tempo
+
+
+
+
+GET
+
+	
+
+/social-links
+
+	
+
+Redes sociais
+
+
+
+
+GET
+
+	
+
+/projects/{slug}/analysis
+
+	
+
+Última análise publicada
+
+
+
+
+GET
+
+	
+
+/curriculum
+
+	
+
+Currículo
+
+
+
+
+POST
+
+	
+
+/contact
+
+	
+
+Envio de mensagem
+
+Os endpoints deverão retornar somente informações apropriadas para acesso público.
+
+29. Endpoints de autenticação
+
+Método
+
+	
+
+Endpoint
+
+
+
+
+POST
+
+	
+
+/auth/login
+
+
+
+
+POST
+
+	
+
+/auth/logout
+
+
+
+
+GET
+
+	
+
+/auth/me
+
+
+
+
+POST
+
+	
+
+/auth/change-password
+
+A recuperação de acesso poderá receber endpoints adicionais quando for implementada.
+
+30. Endpoints administrativos
+
+Prefixo:
+
+/api/v1/admin
+
+Método
+
+	
+
+Endpoint
+
+	
+
+Ação
+
+
+
+
+GET
+
+	
+
+/dashboard
+
+	
+
+Métricas
+
+
+
+
+GET
+
+	
+
+/projects
+
+	
+
+Todos os projetos
+
+
+
+
+POST
+
+	
+
+/projects
+
+	
+
+Criar
+
+
+
+
+PUT
+
+	
+
+/projects/{id}
+
+	
+
+Atualizar
+
+
+
+
+DELETE
+
+	
+
+/projects/{id}
+
+	
+
+Excluir
+
+
+
+
+PATCH
+
+	
+
+/projects/{id}/publish
+
+	
+
+Publicar
+
+
+
+
+PATCH
+
+	
+
+/projects/{id}/unpublish
+
+	
+
+Despublicar
+
+
+
+
+PATCH
+
+	
+
+/projects/{id}/archive
+
+	
+
+Arquivar
+
+
+
+
+PUT
+
+	
+
+/profile
+
+	
+
+Editar perfil
+
+
+
+
+POST
+
+	
+
+/technologies
+
+	
+
+Criar tecnologia
+
+
+
+
+PUT
+
+	
+
+/technologies/{id}
+
+	
+
+Editar tecnologia
+
+
+
+
+DELETE
+
+	
+
+/technologies/{id}
+
+	
+
+Excluir tecnologia
+
+
+
+
+POST
+
+	
+
+/media
+
+	
+
+Upload
+
+
+
+
+GET
+
+	
+
+/messages
+
+	
+
+Consultar mensagens
+
+
+
+
+PATCH
+
+	
+
+/messages/{id}/read
+
+	
+
+Marcar como lida
+
+
+
+
+DELETE
+
+	
+
+/messages/{id}
+
+	
+
+Excluir mensagem
+
+
+
+
+PUT
+
+	
+
+/settings
+
+	
+
+Configurações
+
+Os módulos de experiências, formação e certificações terão endpoints administrativos equivalentes.
+
+31. Endpoints do analisador
+
+Método
+
+	
+
+Endpoint
+
+	
+
+Ação
+
+
+
+
+POST
+
+	
+
+/projects/{id}/analyses
+
+	
+
+Solicitar análise
+
+
+
+
+GET
+
+	
+
+/projects/{id}/analyses
+
+	
+
+Histórico
+
+
+
+
+GET
+
+	
+
+/analyses/{id}
+
+	
+
+Consultar resultado
+
+A criação de uma análise deverá retornar um identificador e seu status inicial.
+
+A execução ocorrerá em segundo plano no servidor, sem manter a requisição HTTP aberta até o fim do processamento.
+
+Inicialmente, um serviço de processamento em background do ASP.NET Core poderá atender essa necessidade, utilizando um mecanismo adequado de persistência e recuperação de tarefas caso o servidor reinicie.
+
+32. Padrão de respostas e erros
+
+A API deverá utilizar códigos HTTP adequados.
+
+Código
+
+	
+
+Situação
+
+
+
+
+200
+
+	
+
+Consulta ou operação concluída
+
+
+
+
+201
+
+	
+
+Recurso criado
+
+
+
+
+202
+
+	
+
+Análise aceita para processamento
+
+
+
+
+204
+
+	
+
+Operação sem conteúdo
+
+
+
+
+400
+
+	
+
+Requisição inválida
+
+
+
+
+401
+
+	
+
+Não autenticado
+
+
+
+
+403
+
+	
+
+Acesso proibido
+
+
+
+
+404
+
+	
+
+Recurso inexistente
+
+
+
+
+409
+
+	
+
+Conflito
+
+
+
+
+422
+
+	
+
+Dados semanticamente inválidos, quando aplicável
+
+
+
+
+429
+
+	
+
+Limite de requisições
+
+
+
+
+500
+
+	
+
+Erro interno
+
+Os erros deverão possuir formato consistente, preferencialmente seguindo Problem Details.
+
+Não deverão ser expostos detalhes internos do servidor aos visitantes.
+
+PARTE VIII — SEGURANÇA, QUALIDADE E EXPERIÊNCIA
+33. Requisitos de segurança
+
+ID
+
+	
+
+Requisito
+
+
+
+
+RNF-001
+
+	
+
+HTTPS obrigatório em produção
+
+
+
+
+RNF-002
+
+	
+
+Senhas protegidas por hash apropriado
+
+
+
+
+RNF-003
+
+	
+
+Cookies de autenticação seguros
+
+
+
+
+RNF-004
+
+	
+
+Validação de permissões no backend
+
+
+
+
+RNF-005
+
+	
+
+Proteção contra CSRF quando aplicável
+
+
+
+
+RNF-006
+
+	
+
+Proteção contra XSS
+
+
+
+
+RNF-007
+
+	
+
+Proteção contra SQL Injection
+
+
+
+
+RNF-008
+
+	
+
+Limitação de requisições
+
+
+
+
+RNF-009
+
+	
+
+Validação de uploads
+
+
+
+
+RNF-010
+
+	
+
+Segredos fora do Git
+
+
+
+
+RNF-011
+
+	
+
+Logs sem credenciais
+
+
+
+
+RNF-012
+
+	
+
+Backups periódicos
+
+
+
+
+RNF-013
+
+	
+
+Isolamento do analisador
+
+
+
+
+RNF-014
+
+	
+
+Tratamento seguro de erros
+
+O Entity Framework Core auxiliará no uso de consultas parametrizadas, mas consultas SQL manuais continuarão exigindo cuidados.
+
+Descrições ricas e Markdown deverão ser convertidos ou sanitizados adequadamente antes da renderização.
+
+34. Interface e acessibilidade
+
+O Codefy deverá funcionar em celulares, tablets e computadores.
+
+Requisitos
+
+Layout responsivo.
+
+Navegação por teclado.
+
+Contraste adequado.
+
+Texto alternativo em imagens.
+
+Formulários com labels.
+
+Mensagens de erro acessíveis.
+
+Estados de carregamento.
+
+Estados vazios.
+
+Feedback de operações.
+
+Tema claro e escuro.
+
+Respeito à preferência por movimento reduzido.
+
+Identidade visual proposta
+Codefy.
+
+Build. Create. Evolve.
+
+Identidade minimalista com tons escuros e azul tecnológico.
+
+35. SEO e performance
+
+O portfólio será uma vitrine profissional, portanto deverá ser facilmente compartilhável e indexável.
+
+SEO
+
+Títulos por página.
+
+Meta descriptions.
+
+URLs amigáveis.
+
+Open Graph.
+
+Sitemap.
+
+Robots.txt.
+
+Dados estruturados apropriados.
+
+Páginas de projetos indexáveis.
+
+O React poderá ser mantido no frontend, mas a estratégia de renderização deverá garantir que os mecanismos de busca consigam acessar o conteúdo.
+
+Isso poderá ser feito com pré-renderização, geração estática ou renderização no servidor, conforme a solução escolhida.
+
+Metas de performance
+
+Lighthouse Performance: 90 ou mais.
+
+Lighthouse Accessibility: 90 ou mais.
+
+Lighthouse SEO: 90 ou mais.
+
+Carregamento otimizado de imagens.
+
+Carregamento sob demanda de recursos pesados.
+
+Esses valores são metas a validar em produção, não resultados garantidos.
+
+36. Estatísticas de visitantes
+Evolução
+
+Quando implementado, o sistema poderá registrar:
+
+Visualizações do portfólio.
+
+Visualizações de projetos.
+
+Cliques em links externos.
+
+Downloads do currículo.
+
+Páginas mais acessadas.
+
+Evolução de acess
