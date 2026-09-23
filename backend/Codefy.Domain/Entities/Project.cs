@@ -1,3 +1,5 @@
+using Codefy.Domain.Enums;
+
 namespace Codefy.Domain.Entities;
 
 public class Project
@@ -11,4 +13,6 @@ public class Project
     public string ShortDescription { get; set; } = string.Empty;
 
     public string FullDescription { get; set; } = string.Empty;
+
+    public PublicationStatus Status { get; set; } = PublicationStatus.Draft;
 }
