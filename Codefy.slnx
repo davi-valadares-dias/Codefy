@@ -9,4 +9,5 @@
   </Folder>
   <Project Path="backend/Codefy.Api/Codefy.Api.csproj" />
   <Project Path="Codefy.vcxproj" Id="a72c9722-5ab2-4a0b-9e5b-56c692b1bc22" />
+  <Project Path="tests/Codefy.Domain.Tests/Codefy.Domain.Tests.csproj" />
 </Solution>
