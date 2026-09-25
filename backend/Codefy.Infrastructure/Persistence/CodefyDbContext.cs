@@ -15,4 +15,12 @@ public class CodefyDbContext : DbContext
     public DbSet<ProjectCategory> ProjectCategories => Set<ProjectCategory>();
 
     public DbSet<Technology> Technologies => Set<Technology>();
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(
+            typeof(CodefyDbContext).Assembly);
+
+        base.OnModelCreating(modelBuilder);
+    }
 }
