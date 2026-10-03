@@ -5,6 +5,7 @@
     <Platform Name="x86" />
   </Configurations>
   <Folder Name="/backend/">
+    <Project Path="backend/Codefy.Application/Codefy.Application.csproj" />
     <Project Path="backend/Codefy.Domain/Codefy.Domain.csproj" />
     <Project Path="backend/Codefy.Infrastructure/Codefy.Infrastructure.csproj" />
   </Folder>
