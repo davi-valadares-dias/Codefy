@@ -1,4 +1,7 @@
+using Codefy.Application.Projects.Repositories;
+using Codefy.Application.Projects.UseCases.GetPublishedProjects;
 using Codefy.Infrastructure.Persistence;
+using Codefy.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +16,10 @@ builder.Services.AddDbContext<CodefyDbContext>(options =>
     options.UseNpgsql(connectionString);
 });
 
+builder.Services.AddScoped<IProjectReadRepository, ProjectReadRepository>();
+
+builder.Services.AddScoped<GetPublishedProjectsUseCase>();
+
 var app = builder.Build();
 
 app.MapGet("/api/health", () =>
@@ -23,5 +30,16 @@ app.MapGet("/api/health", () =>
         service = "Codefy.Api"
     });
 });
+
+app.MapGet(
+    "/api/v1/projects",
+    async (
+        GetPublishedProjectsUseCase useCase,
+        CancellationToken cancellationToken) =>
+    {
+        var projects = await useCase.ExecuteAsync(cancellationToken);
+
+        return Results.Ok(projects);
+    });
 
 app.Run();

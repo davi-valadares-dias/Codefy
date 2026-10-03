@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Codefy.Infrastructure\Codefy.Infrastructure.csproj" />
+    <ProjectReference Include="..\Codefy.Application\Codefy.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>
