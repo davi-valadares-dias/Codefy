@@ -1,3 +1,6 @@
+using Codefy.Application.Projects.Categories.Dtos;
+using Codefy.Application.Projects.Categories.Repositories;
+using Codefy.Application.Projects.Categories.UseCases.CreateProjectCategory;
 using Codefy.Application.Projects.Dtos;
 using Codefy.Application.Projects.Repositories;
 using Codefy.Application.Projects.UseCases.CreateProject;
@@ -21,8 +24,13 @@ builder.Services.AddDbContext<CodefyDbContext>(options =>
 builder.Services.AddScoped<IProjectReadRepository, ProjectReadRepository>();
 builder.Services.AddScoped<IProjectWriteRepository, ProjectWriteRepository>();
 
+builder.Services.AddScoped<
+    IProjectCategoryWriteRepository,
+    ProjectCategoryWriteRepository>();
+
 builder.Services.AddScoped<GetPublishedProjectsUseCase>();
 builder.Services.AddScoped<CreateProjectUseCase>();
+builder.Services.AddScoped<CreateProjectCategoryUseCase>();
 
 var app = builder.Build();
 
@@ -64,6 +72,25 @@ if (app.Environment.IsDevelopment())
                 new
                 {
                     id = projectId
+                });
+        });
+
+    app.MapPost(
+        "/api/dev/project-categories",
+        async (
+            CreateProjectCategoryRequest request,
+            CreateProjectCategoryUseCase useCase,
+            CancellationToken cancellationToken) =>
+        {
+            var categoryId = await useCase.ExecuteAsync(
+                request,
+                cancellationToken);
+
+            return Results.Created(
+                $"/api/dev/project-categories/{categoryId}",
+                new
+                {
+                    id = categoryId
                 });
         });
 }
